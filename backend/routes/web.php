@@ -13,9 +13,16 @@
 |
 */
 
+//ativos
 $router->get('/ativos', 'Ativo@listar');
 $router->get('/ativos/{id}','Ativo@buscarId');
 $router->post('/ativos','Ativo@salvar' );
 $router->put('/ativos', 'Ativo@alterar');
 $router->delete('/ativos/{id}', 'Ativo@deletar');
 
+//aportes
+$router->get('/aportes', 'Aporte@listar');
+$router->get('/aportes/{id}','Aporte@buscarId');
+$router->post('/aportes','Aporte@salvar' );
+$router->put('/aportes', 'Aporte@alterar');
+$router->delete('/aportes/{id}', 'Aporte@deletar');
