@@ -21,14 +21,20 @@ class Ativo{
     public function listar(){
         
         $this->ativoResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
-        return HttpResponse::httpStatus200( $this->ativoResource->listar() );
+
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
+            $this->ativoResource->listar()
+        ));
 
     }
 
     public function buscarId(Request $request){
         
         $this->ativoResource->setValorId( $request->id );
-        return HttpResponse::httpStatus200( $this->ativoResource->buscarId() );
+
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
+            $this->ativoResource->buscarId()
+        ));
 
     }
 
@@ -49,7 +55,7 @@ class Ativo{
 
         $sucesso = $this->ativoResource->salvar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 
@@ -71,7 +77,7 @@ class Ativo{
 
         $sucesso = $this->ativoResource->alterar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 
@@ -81,7 +87,7 @@ class Ativo{
 
         $sucesso = $this->ativoResource->deletar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 

@@ -21,14 +21,20 @@ class Aporte{
     public function listar(){
         
         $this->aporteResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
-        return HttpResponse::httpStatus200( $this->aporteResource->listar() );
+
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
+            $this->aporteResource->listar()
+        ));
         
     }
 
     public function buscarId(Request $request){
         
         $this->aporteResource->setValorId( $request->id );
-        return HttpResponse::httpStatus200( $this->aporteResource->buscarId() );
+
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
+            $this->aporteResource->buscarId()
+        ));
         
     }
 
@@ -52,7 +58,7 @@ class Aporte{
 
         $sucesso = $this->aporteResource->salvar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
         
     }
 
@@ -77,7 +83,7 @@ class Aporte{
 
         $sucesso = $this->aporteResource->alterar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 
@@ -87,7 +93,7 @@ class Aporte{
 
         $sucesso = $this->aporteResource->deletar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 

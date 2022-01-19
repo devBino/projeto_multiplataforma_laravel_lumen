@@ -17,4 +17,12 @@ class Params{
      */
     const DEFAULT_LIMIT_TABLES = 1000;
 
+    /**
+     * constants para mensagens
+     */
+    const MSG_SUCCESS = "Operação realizada com sucesso...";
+    const MSG_WARNING = "Não foi possível concluir a operação...";
+    const MSG_ERROR = "Erro ao tentar executar a operação...";
+
+
 }

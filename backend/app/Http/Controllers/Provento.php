@@ -21,14 +21,19 @@ class Provento{
     public function listar(){
         
         $this->proventoResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
-        return HttpResponse::httpStatus200( $this->proventoResource->listar() );
-
+        
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
+            $this->proventoResource->listar()
+        ));
     }
 
     public function buscarId(Request $request){
         
         $this->proventoResource->setValorId( $request->id );
-        return HttpResponse::httpStatus200( $this->proventoResource->buscarId() );
+
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
+            $this->proventoResource->buscarId()
+        ));
 
     }
 
@@ -50,7 +55,7 @@ class Provento{
 
         $sucesso = $this->proventoResource->salvar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 
@@ -73,7 +78,7 @@ class Provento{
 
         $sucesso = $this->proventoResource->alterar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 
@@ -83,7 +88,7 @@ class Provento{
 
         $sucesso = $this->proventoResource->deletar();
 
-        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 
