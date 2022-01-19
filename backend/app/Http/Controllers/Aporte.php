@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 /**
  * Recebe as requisições e utiliza AporteResource
- * para salvar em bando de dados
+ * para salvar em banco de dados
  */
 class Aporte{
 
