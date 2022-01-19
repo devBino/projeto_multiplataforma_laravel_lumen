@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\Resources\AtivoResource;
+use App\Http\Constants\Params;
 use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
@@ -19,10 +20,10 @@ class Ativo{
 
     public function listar(){
         
-        $this->ativoResource->setLimit(100);
+        $this->ativoResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
 
-        return (new Response($this->ativoResource->listar(),200))
-            ->header("Content-Type", "application/json");
+        return (new Response($this->ativoResource->listar(), Params::STATUS_HTTP_200))
+            ->header("Content-Type", Params::TYPE_JSON);
 
     }
 
@@ -30,8 +31,8 @@ class Ativo{
         
         $this->ativoResource->setValorId( $request->id );
 
-        return (new Response($this->ativoResource->buscarId(),200))
-            ->header("Content-Type", "application/json");
+        return (new Response($this->ativoResource->buscarId(), Params::STATUS_HTTP_200))
+            ->header("Content-Type", Params::TYPE_JSON);
 
     }
 
@@ -52,8 +53,8 @@ class Ativo{
 
         $sucesso = $this->ativoResource->salvar();
 
-        return (new Response(['sucesso'=>$sucesso],200))
-            ->header("Content-Type", "application/json");
+        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
+            ->header("Content-Type", Params::TYPE_JSON);
 
     }
 
@@ -75,8 +76,8 @@ class Ativo{
 
         $sucesso = $this->ativoResource->alterar();
 
-        return (new Response(['sucesso'=>$sucesso],200))
-            ->header("Content-Type", "application/json");
+        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
+            ->header("Content-Type", Params::TYPE_JSON);
 
     }
 
@@ -86,8 +87,8 @@ class Ativo{
 
         $sucesso = $this->ativoResource->deletar();
 
-        return (new Response(['sucesso'=>$sucesso],200))
-            ->header("Content-Type", "application/json");
+        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
+            ->header("Content-Type", Params::TYPE_JSON);
 
     }
 
