@@ -3,6 +3,7 @@ namespace App\Http\Repositories\Abstracts;
 
 use DB;
 use Exception;
+use App\Http\Constants\Params;
 
 /**
  * @author Fernando Bino Mchado
@@ -95,7 +96,7 @@ abstract class Query{
         $this->params = $pParams;
     }
 
-    public function setLimit($pLimit = 200){
+    public function setLimit($pLimit = Params::DEFAULT_LIMIT_TABLES){
         $this->limit = $pLimit;
     }
 
