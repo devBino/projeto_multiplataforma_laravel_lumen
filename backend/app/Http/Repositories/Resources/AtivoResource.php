@@ -10,6 +10,7 @@ class AtivoResource extends Query{
         parent::__construct();
 
         $this->setTabela("papel");
+        $this->setCampoId("cdPapel");
 
     }
 

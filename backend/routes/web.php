@@ -13,16 +13,9 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
-});
-
-/*Route::get('/caixa','Caixa@index')->middleware(['IsOk']);
-Route::post('/caixa-salvar','Caixa@salvar')->middleware(['IsOk']);
-Route::get('/caixa-deletar/{id}','Caixa@deletar')->middleware(['IsOk']);
-Route::post('/caixa-pesquisar','Caixa@pesquisar')->middleware(['IsOk']);
-Route::get('/caixa-pesquisar','Caixa@index')->middleware(['IsOk']);*/
-
 $router->get('/ativos', 'Ativo@listar');
-
+$router->get('/ativos/{id}','Ativo@buscarId');
+$router->post('/ativos','Ativo@salvar' );
+$router->put('/ativos', 'Ativo@alterar');
+$router->delete('/ativos/{id}', 'Ativo@deletar');
 
