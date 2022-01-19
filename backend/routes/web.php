@@ -26,3 +26,10 @@ $router->get('/aportes/{id}','Aporte@buscarId');
 $router->post('/aportes','Aporte@salvar' );
 $router->put('/aportes', 'Aporte@alterar');
 $router->delete('/aportes/{id}', 'Aporte@deletar');
+
+//proventos
+$router->get('/proventos', 'Provento@listar');
+$router->get('/proventos/{id}','Provento@buscarId');
+$router->post('/proventos','Provento@salvar' );
+$router->put('/proventos', 'Provento@alterar');
+$router->delete('/proventos/{id}', 'Provento@deletar');
