@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\Resources\AtivoResource;
+use App\Http\Repositories\Responses\HttpResponse;
 use App\Http\Constants\Params;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 /**
@@ -21,18 +21,14 @@ class Ativo{
     public function listar(){
         
         $this->ativoResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
-
-        return (new Response($this->ativoResource->listar(), Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( $this->ativoResource->listar() );
 
     }
 
     public function buscarId(Request $request){
         
         $this->ativoResource->setValorId( $request->id );
-
-        return (new Response($this->ativoResource->buscarId(), Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( $this->ativoResource->buscarId() );
 
     }
 
@@ -53,8 +49,7 @@ class Ativo{
 
         $sucesso = $this->ativoResource->salvar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 
@@ -76,8 +71,7 @@ class Ativo{
 
         $sucesso = $this->ativoResource->alterar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 
@@ -87,8 +81,7 @@ class Ativo{
 
         $sucesso = $this->ativoResource->deletar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 

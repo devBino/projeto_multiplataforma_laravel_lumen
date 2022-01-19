@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\Resources\AporteResource;
+use App\Http\Repositories\Responses\HttpResponse;
 use App\Http\Constants\Params;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 /**
@@ -21,19 +21,15 @@ class Aporte{
     public function listar(){
         
         $this->aporteResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
-
-        return (new Response($this->aporteResource->listar(), Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
-
+        return HttpResponse::httpStatus200( $this->aporteResource->listar() );
+        
     }
 
     public function buscarId(Request $request){
         
         $this->aporteResource->setValorId( $request->id );
-
-        return (new Response($this->aporteResource->buscarId(), Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
-
+        return HttpResponse::httpStatus200( $this->aporteResource->buscarId() );
+        
     }
 
     public function salvar(Request $request){
@@ -56,9 +52,8 @@ class Aporte{
 
         $sucesso = $this->aporteResource->salvar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
-
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
+        
     }
 
     public function alterar(Request $request){
@@ -82,8 +77,7 @@ class Aporte{
 
         $sucesso = $this->aporteResource->alterar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 
@@ -93,8 +87,7 @@ class Aporte{
 
         $sucesso = $this->aporteResource->deletar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 

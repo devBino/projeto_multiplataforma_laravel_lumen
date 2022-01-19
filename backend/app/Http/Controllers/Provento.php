@@ -2,8 +2,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\Resources\ProventoResource;
+use App\Http\Repositories\Responses\HttpResponse;
 use App\Http\Constants\Params;
-use Illuminate\Http\Response;
 use Illuminate\Http\Request;
 
 /**
@@ -21,18 +21,14 @@ class Provento{
     public function listar(){
         
         $this->proventoResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
-
-        return (new Response($this->proventoResource->listar(), Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( $this->proventoResource->listar() );
 
     }
 
     public function buscarId(Request $request){
         
         $this->proventoResource->setValorId( $request->id );
-
-        return (new Response($this->proventoResource->buscarId(), Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( $this->proventoResource->buscarId() );
 
     }
 
@@ -54,8 +50,7 @@ class Provento{
 
         $sucesso = $this->proventoResource->salvar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 
@@ -78,8 +73,7 @@ class Provento{
 
         $sucesso = $this->proventoResource->alterar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 
@@ -89,8 +83,7 @@ class Provento{
 
         $sucesso = $this->proventoResource->deletar();
 
-        return (new Response(['sucesso'=>$sucesso], Params::STATUS_HTTP_200))
-            ->header("Content-Type", Params::TYPE_JSON);
+        return HttpResponse::httpStatus200( ['sucesso'=>$sucesso] );
 
     }
 
