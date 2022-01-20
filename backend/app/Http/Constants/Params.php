@@ -24,5 +24,5 @@ class Params{
     const MSG_WARNING = "Não foi possível concluir a operação...";
     const MSG_ERROR = "Erro ao tentar executar a operação...";
 
-
+    
 }

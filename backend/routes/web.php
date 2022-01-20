@@ -47,3 +47,9 @@ $router->get('/lancamentos/{id}','Lancamento@buscarId');
 $router->post('/lancamentos','Lancamento@salvar' );
 $router->put('/lancamentos', 'Lancamento@alterar');
 $router->delete('/lancamentos/{id}', 'Lancamento@deletar');
+
+//resgates
+$router->get('/resgates', 'Resgate@listar');
+$router->get('/resgates/{id}','Resgate@buscarId');
+$router->post('/resgates','Resgate@salvar' );
+$router->delete('/resgates/{id}', 'Resgate@deletar');
