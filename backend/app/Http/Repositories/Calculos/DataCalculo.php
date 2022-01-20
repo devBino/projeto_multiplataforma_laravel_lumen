@@ -29,8 +29,8 @@ class DataCalculo{
     /**
      * @example
      
-     *  diffDays('2001-02-22', date('Y-m-d'))
-     *  diffDays('2001-02-22','2022-01-20')
+     *  diffMonths('2001-02-22', date('Y-m-d'))
+     *  diffMonths('2001-02-22','2022-01-20')
      */
     public static function diffMonths($pDataIni, $pDataFim){
 
@@ -49,8 +49,8 @@ class DataCalculo{
     /**
      * @example
      
-     *  diffDays('2001-02-22', date('Y-m-d'))
-     *  diffDays('2001-02-22','2022-01-20')
+     *  diffYears('2001-02-22', date('Y-m-d'))
+     *  diffYears('2001-02-22','2022-01-20')
      */
     public static function diffYears($pDataIni, $pDataFim){
 
