@@ -1,23 +1,27 @@
-create database investimento;
+-- Criação do banco
+drop database if exists db_investimentos;
 
-use investimento;
+create database db_investimentos;
 
+use db_investimentos;
+
+-- Criação tabela usuário
 create table usuario(
 	cdUsuario bigint not null auto_increment,
     nmUsuario varchar(50) not null unique,
     dsSenha varchar(100) not null unique,
     cdPermissao int not null,
-    dtUpdate datetime not null,
-    cdUsuarioUpdate int not null,
     
     primary key(cdUsuario)
 )default charset = utf8;
 
+-- Insere um usuário admin
 INSERT INTO usuario
 (nmUsuario,dsSenha,cdPermissao)
 VALUES
 ('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1);
 
+-- Cria demais tabelas
 create table papel(
     cdPapel bigint not null auto_increment,
     nmPapel varchar(150) not null,
@@ -129,3 +133,17 @@ create table historicoCotacoes(
     foreign key(cdUsuario) references usuario(cdUsuario),
     primary key(cdHistorico)
 )default charset = utf8;
+
+-- Criação de Triggers
+DELIMITER $
+CREATE TRIGGER Tgr_Atualiza_Aporte AFTER INSERT ON resgates FOR EACH ROW
+BEGIN
+	UPDATE aportes SET status=2 WHERE cdAporte=NEW.cdAporte;
+END$
+
+DELIMITER $
+CREATE TRIGGER Tgr_Atualiza_Cotacao AFTER UPDATE ON papel FOR EACH ROW
+BEGIN
+	INSERT INTO historicoCotacoes (cdPapel,cotacao,cdUsuario) 
+    VALUES (NEW.cdPapel,NEW.cotacao,NEW.cdUsuario);
+END$
