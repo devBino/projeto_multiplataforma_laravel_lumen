@@ -136,9 +136,15 @@ create table historicoCotacoes(
 
 -- Criação de Triggers
 DELIMITER $
-CREATE TRIGGER Tgr_Atualiza_Aporte AFTER INSERT ON resgates FOR EACH ROW
+CREATE TRIGGER Tgr_Atualiza_Aporte_Insert AFTER INSERT ON resgates FOR EACH ROW
 BEGIN
-	UPDATE aportes SET status=2 WHERE cdAporte=NEW.cdAporte;
+	UPDATE aportes SET cdStatus=2 WHERE cdAporte=NEW.cdAporte;
+END$
+
+DELIMITER $
+CREATE TRIGGER Tgr_Atualiza_Aporte_Delete AFTER DELETE ON resgates FOR EACH ROW
+BEGIN
+	UPDATE aportes SET cdStatus=1 WHERE cdAporte=OLD.cdAporte;
 END$
 
 DELIMITER $
