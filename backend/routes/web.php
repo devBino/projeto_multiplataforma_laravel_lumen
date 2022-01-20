@@ -40,3 +40,10 @@ $router->get('/informe/{id}','Informe@buscarId');
 $router->post('/informe','Informe@salvar' );
 $router->put('/informe', 'Informe@alterar');
 $router->delete('/informe/{id}', 'Informe@deletar');
+
+//lancamentos
+$router->get('/lancamentos', 'Lancamento@listar');
+$router->get('/lancamentos/{id}','Lancamento@buscarId');
+$router->post('/lancamentos','Lancamento@salvar' );
+$router->put('/lancamentos', 'Lancamento@alterar');
+$router->delete('/lancamentos/{id}', 'Lancamento@deletar');
