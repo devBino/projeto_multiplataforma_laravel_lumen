@@ -33,3 +33,10 @@ $router->get('/proventos/{id}','Provento@buscarId');
 $router->post('/proventos','Provento@salvar' );
 $router->put('/proventos', 'Provento@alterar');
 $router->delete('/proventos/{id}', 'Provento@deletar');
+
+//informe
+$router->get('/informe', 'Informe@listar');
+$router->get('/informe/{id}','Informe@buscarId');
+$router->post('/informe','Informe@salvar' );
+$router->put('/informe', 'Informe@alterar');
+$router->delete('/informe/{id}', 'Informe@deletar');
