@@ -37,6 +37,11 @@ class MontanteCalculoBuilder{
         return $this;
     }
 
+    public function setValorAtual($pValor){
+        $this->instance->setValorAtual($pValor);
+        return $this;
+    }
+
     public function setTaxaRetorno($pTaxa){
         $this->instance->setTaxaRetorno($pTaxa);
         return $this;
@@ -49,6 +54,11 @@ class MontanteCalculoBuilder{
 
     public function setTaxaIof(){
         $this->instance->setTaxaIof();
+        return $this;
+    }
+
+    public function setTaxaAdmin($pTaxa){
+        $this->instance->setTaxaAdmin($pTaxa);
         return $this;
     }
 

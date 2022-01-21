@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Repositories\Resources\ResgateResource;
+use App\Http\Repositories\Resources\AtivoResource;
 use App\Http\Repositories\Resources\AporteResource;
 use App\Http\Repositories\Responses\HttpResponse;
 use App\Http\Repositories\Calculos\DataCalculo as DATACALC;
@@ -17,10 +18,12 @@ use DateTime;
 class Resgate{
 
     private $resgateResource;
-    private $aporteResource;
+    private $papelResource;
+    private $ativoResource;
     private $montanteCalculoBuilder;
 
     public function __construct(){
+        $this->ativoResource = new AtivoResource();
         $this->resgateResource = new ResgateResource();
         $this->aporteResource = new AporteResource();
         $this->montanteCalculoBuilder = new MontanteCalculoBuilder();
@@ -45,63 +48,58 @@ class Resgate{
 
     }
 
-    /**
-     * @todo
-     *  Precisa concluir a lógica de um resgate
-     *  no método abaixo
-     */
     public function salvar(Request $request){
         
         $reqBody = $request->all();
 
+        //recupera dados necessários para o calculo
         $this->aporteResource->setValorId( $reqBody['aporte'] );
         $dadosAporte = $this->aporteResource->buscarId();
 
-        $params = [];
-
-        $params['cdPapel'] = $reqBody['papel'];
-        $params['cdAporte'] = $reqBody['aporte'];
-        $params['valor'] = $reqBody['valor'];
-        $params['qtde'] = $reqBody['quantidade'];
-        $params['subTotal'] = $reqBody['subTotal'];
-
-        $params['capitalInicial'] = floatval($dadosAporte[0]->subTotal);
-        $params['diasCorridos'] = DATACALC::diffDays($dadosAporte[0]->dtAporte, date('Y-m-d'));
+        $this->ativoResource->setValorId( $dadosAporte[0]->cdPapel );
+        $dadosAtivo = $this->ativoResource->buscarId();
         
+        //calcula o valor montanta do resgate
         $montanteCalculo = $this->montanteCalculoBuilder
-            ->setDiasCorridos($params['diasCorridos'])
-            ->setTipo(Params::RENDA_FIXA)
+            ->setDiasCorridos( DATACALC::diffDays($dadosAporte[0]->dtAporte, date('Y-m-d')) )
+            ->setTipo($dadosAtivo[0]->cdTipo)
             ->setValorAporte($dadosAporte[0]->subTotal)
+            ->setValorAtual($reqBody['subTotal'])
             ->setTaxaRetorno($dadosAporte[0]->taxaRetorno)
             ->setTaxaIr()
             ->setTaxaIof()
+            ->setTaxaAdmin($dadosAporte[0]->taxaAdmin)
             ->builder();
+
+        //seta os parametros do resgate
+        $params = [];
+
+        $params['cdPapel']          = $reqBody['papel'];
+        $params['cdAporte']         = $reqBody['aporte'];
+        $params['valor']            = floatval($reqBody['valor']);
+        $params['qtde']             = $reqBody['quantidade'];
+        $params['subTotal']         = floatval($reqBody['subTotal']);
+        $params['capitalInicial']   = floatval($dadosAporte[0]->subTotal);
+        $params['diasCorridos']     = $montanteCalculo->getDiasCorridos();
+        $params['montanteBruto']    = $montanteCalculo->getValorMontanteBruto();
+        $params['montanteLiquido']  = $montanteCalculo->getValorMontanteLiquido();
+        $params['lucroBruto']       = $montanteCalculo->getValorLucroBruto();
+        $params['lucroLiquido']     = $montanteCalculo->getValorLucroLiquido();
+        $params['taxaRetorno']      = $montanteCalculo->getTaxaRetorno();
+        $params['taxaAdmin']        = $montanteCalculo->getTaxaAdmin();
+        $params['taxaIof']          = $montanteCalculo->getTaxaIof();
+        $params['taxaIr']           = $montanteCalculo->getTaxaIr();
+        $params['descontoIof']      = $montanteCalculo->getDescontoIof();
+        $params['descontoIr']       = $montanteCalculo->getDescontoIr();
+        $params['descontoAdmin']    = $montanteCalculo->getDescontoAdmin();
+        $params['cdUsuario']        = $reqBody['usuario'];
         
-        echo "<pre>";print_r($montanteCalculo);die;
-
-        return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
-            $params
-        ));
-
-        
-        /*$params['montanteBruto'] = 1353.40;
-        $params['montanteLiquido'] = 1353.40;
-        $params['lucroBruto'] = 0;
-        $params['lucroLiquido'] = 0;
-        $params['taxaRetorno'] = 0;
-        $params['taxaAdmin'] = 0;
-        $params['taxaIof'] = 0;
-        $params['taxaIr'] = 0;
-        $params['descontoIof'] = 0;
-        $params['descontoIr'] = 0;
-        $params['descontoAdmin'] = 0;
-        $params['cdUsuario'] = $reqBody['usuario'];
-
+        //finaliza o resgate
         $this->resgateResource->setParams($params);
 
         $sucesso = $this->resgateResource->salvar();
 
-        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );*/
+        return HttpResponse::httpStatus200( HttpResponse::prepareResponseOperacao($sucesso) );
 
     }
 
