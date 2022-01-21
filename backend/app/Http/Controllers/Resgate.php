@@ -5,6 +5,7 @@ use App\Http\Repositories\Resources\ResgateResource;
 use App\Http\Repositories\Resources\AporteResource;
 use App\Http\Repositories\Responses\HttpResponse;
 use App\Http\Repositories\Calculos\DataCalculo as DATACALC;
+use App\Http\Repositories\Builder\MontanteCalculoBuilder;
 use App\Http\Constants\Params;
 use Illuminate\Http\Request;
 use DateTime;
@@ -17,10 +18,12 @@ class Resgate{
 
     private $resgateResource;
     private $aporteResource;
+    private $montanteCalculoBuilder;
 
     public function __construct(){
         $this->resgateResource = new ResgateResource();
         $this->aporteResource = new AporteResource();
+        $this->montanteCalculoBuilder = new MontanteCalculoBuilder();
     }
 
     public function listar(){
@@ -65,6 +68,17 @@ class Resgate{
         $params['capitalInicial'] = floatval($dadosAporte[0]->subTotal);
         $params['diasCorridos'] = DATACALC::diffDays($dadosAporte[0]->dtAporte, date('Y-m-d'));
         
+        $montanteCalculo = $this->montanteCalculoBuilder
+            ->setDiasCorridos($params['diasCorridos'])
+            ->setTipo(Params::RENDA_FIXA)
+            ->setValorAporte($dadosAporte[0]->subTotal)
+            ->setTaxaRetorno($dadosAporte[0]->taxaRetorno)
+            ->setTaxaIr()
+            ->setTaxaIof()
+            ->builder();
+        
+        echo "<pre>";print_r($montanteCalculo);die;
+
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
             $params
         ));

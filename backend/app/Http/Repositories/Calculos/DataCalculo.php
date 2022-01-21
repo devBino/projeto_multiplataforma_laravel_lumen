@@ -4,6 +4,7 @@ namespace App\Http\Repositories\Calculos;
 use DateTime;
 
 /**
+ * @author Fernando Bino Machado
  * Classe para facilitar recuperar diferença entre datas
  */
 class DataCalculo{

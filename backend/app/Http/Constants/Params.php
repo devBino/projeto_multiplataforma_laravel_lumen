@@ -24,5 +24,12 @@ class Params{
     const MSG_WARNING = "Não foi possível concluir a operação...";
     const MSG_ERROR = "Erro ao tentar executar a operação...";
 
+    /**
+     * constants para aportes
+     */
+    const RENDA_FIXA = 1;
+    const RENDA_VARIAVEL = 2;
+
+    const TAXA_SOBRE_LUCRO = 20;
     
 }
