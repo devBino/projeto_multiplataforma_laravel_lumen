@@ -121,12 +121,6 @@ class MontanteCalculo{
     }
 
     public function getValorMontanteBruto( $formato = true ){
-
-        /*if( $formato ){
-            return number_format( $this->valorMontanteBruto,2,".","" );
-        }else{
-            return floatval($this->valorMontanteBruto);    
-        }*/
         return floatval($this->valorMontanteBruto);    
     }
 
@@ -164,7 +158,10 @@ class MontanteCalculo{
  
     public function calcularValorMontanteBrutoRendaFixa(){
 
-        //M = C (1+i)t
+        /**
+         * Fórmula juros compostos
+         * M = C (1+i)t
+         */
         $c = $this->valorAporte;
         $i = $this->taxaRetorno / 100;
         $t = $this->diasCorridos / 365;
