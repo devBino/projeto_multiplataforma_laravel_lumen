@@ -18,10 +18,11 @@ class Informe{
         $this->informeResource = new InformeResource();
     }
 
-    public function listar(){
+    public function listar(Request $request){
         
         $this->informeResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
-        
+        $this->informeResource->setRequest($request);
+
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
             $this->informeResource->listar()
         ));
@@ -30,6 +31,7 @@ class Informe{
     public function buscarId(Request $request){
         
         $this->informeResource->setValorId( $request->id );
+        $this->informeResource->setRequest($request);
 
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
             $this->informeResource->buscarId()
@@ -39,6 +41,8 @@ class Informe{
 
     public function salvar(Request $request){
         
+        $this->informeResource->setRequest($request);
+
         $reqBody = $request->all();
 
         $params = [];
@@ -46,7 +50,6 @@ class Informe{
         $params['descricao'] = $reqBody['descricao'];
         $params['valor'] = $reqBody['valor'];
         $params['dtInforme'] = $reqBody['data'];
-        $params['cdUsuario'] = $reqBody['usuario'];
 
         $this->informeResource->setParams($params);
 
@@ -58,6 +61,8 @@ class Informe{
 
     public function alterar(Request $request){
         
+        $this->informeResource->setRequest($request);
+
         $reqBody = $request->input();
 
         $params = [];
@@ -65,7 +70,6 @@ class Informe{
         $params['descricao'] = $reqBody['descricao'];
         $params['valor'] = $reqBody['valor'];
         $params['dtInforme'] = $reqBody['data'];
-        $params['cdUsuario'] = $reqBody['usuario'];
 
         $this->informeResource->setValorId($reqBody['id']);
         $this->informeResource->setParams($params);
@@ -78,6 +82,7 @@ class Informe{
 
     public function deletar(Request $request){
 
+        $this->informeResource->setRequest($request);
         $this->informeResource->setValorId($request->id);
 
         $sucesso = $this->informeResource->deletar();

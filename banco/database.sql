@@ -19,7 +19,8 @@ create table usuario(
 INSERT INTO usuario
 (nmUsuario,dsSenha,cdPermissao)
 VALUES
-('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1);
+('admin','d033e22ae348aeb5660fc2140aec35850c4da997',1),
+('teste1','17f9b61099ac5e158010e6eb47c30f6b6c64e6fb',2);
 
 -- Cria demais tabelas
 create table papel(

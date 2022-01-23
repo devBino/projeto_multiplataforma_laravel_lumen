@@ -18,8 +18,9 @@ class Lancamento{
         $this->lancamentoResource = new LancamentoResource();
     }
 
-    public function listar(){
+    public function listar(Request $request){
         
+        $this->lancamentoResource->setRequest($request);
         $this->lancamentoResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
         
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
@@ -29,6 +30,7 @@ class Lancamento{
 
     public function buscarId(Request $request){
         
+        $this->lancamentoResource->setRequest($request);
         $this->lancamentoResource->setValorId( $request->id );
 
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
@@ -39,6 +41,8 @@ class Lancamento{
 
     public function salvar(Request $request){
         
+        $this->lancamentoResource->setRequest($request);
+
         $reqBody = $request->all();
 
         $params = [];
@@ -47,7 +51,6 @@ class Lancamento{
         $params['valor'] = $reqBody['valor'];
         $params['dtLancamento'] = $reqBody['data'];
         $params['cdTipo'] = $reqBody['tipo'];
-        $params['cdUsuario'] = $reqBody['usuario'];
 
         $this->lancamentoResource->setParams($params);
 
@@ -59,6 +62,8 @@ class Lancamento{
 
     public function alterar(Request $request){
         
+        $this->lancamentoResource->setRequest($request);
+
         $reqBody = $request->input();
 
         $params = [];
@@ -67,7 +72,6 @@ class Lancamento{
         $params['valor'] = $reqBody['valor'];
         $params['dtLancamento'] = $reqBody['data'];
         $params['cdTipo'] = $reqBody['tipo'];
-        $params['cdUsuario'] = $reqBody['usuario'];
 
         $this->lancamentoResource->setValorId($reqBody['id']);
         $this->lancamentoResource->setParams($params);
@@ -80,6 +84,7 @@ class Lancamento{
 
     public function deletar(Request $request){
 
+        $this->lancamentoResource->setRequest($request);
         $this->lancamentoResource->setValorId($request->id);
 
         $sucesso = $this->lancamentoResource->deletar();

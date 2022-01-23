@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App\Http\Repositories\Responses\HttpResponse;
+use App\Http\Constants\Params;
 
 class IsAuth
 {
@@ -18,10 +19,10 @@ class IsAuth
     {
         
         //recupera e valida token
-        $requestToken = $request->header('x-access-token');
+        $requestToken = $request->header(Params::X_ACCESS_TOKEN);
         
         $dadosUsuario = unserialize( 
-            app('redis')->get( $request->header('user') )
+            app('redis')->get( $request->header(Params::USER) )
         );
 
         //caso token inválido ou expirado

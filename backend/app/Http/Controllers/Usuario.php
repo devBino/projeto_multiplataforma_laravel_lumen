@@ -26,9 +26,9 @@ class Usuario{
         //caso tenha encontrado usuário com as credenciais
         if( count($dadosUsuario) ){
             
-            $token = sha1( $dadosUsuario[0]->nmUsuario . $dadosUsuario[0]->dsSenha . env('SECRET_API') );
+            $token = sha1( $dadosUsuario[0]->nmUsuario . $dadosUsuario[0]->dsSenha . env('SECRET_API') ) . "_" . $dadosUsuario[0]->cdUsuario;
 
-            app('redis')->set($request->user, serialize(['token'=>$token]));
+            app('redis')->set($request->user, serialize(['token'=>$token, 'id'=>$dadosUsuario[0]->cdUsuario]));
             app('redis')->expire($request->user, intval(env('TIME_EXPIRE_TOKEN')) );
 
             return HttpResponse::httpStatus200( HttpResponse::prepareResponseToken($token, $request->user, true));

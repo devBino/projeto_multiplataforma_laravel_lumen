@@ -29,8 +29,9 @@ class Resgate{
         $this->montanteCalculoBuilder = new MontanteCalculoBuilder();
     }
 
-    public function listar(){
+    public function listar(Request $request){
         
+        $this->resgateResource->setRequest($request);
         $this->resgateResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
         
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
@@ -40,6 +41,7 @@ class Resgate{
 
     public function buscarId(Request $request){
         
+        $this->resgateResource->setRequest($request);
         $this->resgateResource->setValorId( $request->id );
 
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
@@ -50,15 +52,34 @@ class Resgate{
 
     public function salvar(Request $request){
         
+        $this->resgateResource->setRequest($request);
+
         $reqBody = $request->all();
 
         //recupera dados necessários para o calculo
+        $this->aporteResource->setRequest($request);
         $this->aporteResource->setValorId( $reqBody['aporte'] );
         $dadosAporte = $this->aporteResource->buscarId();
 
+        //caso aporte não pertença ao usuário dono do token
+        if( !count($dadosAporte) ){
+            return HttpResponse::httpStatus401( HttpResponse::prepareResponseOperacao(false) );
+        }
+
+        //caso aporte já tenha sido resgatado antes
+        if( $dadosAporte[0]->cdStatus == Params::APORTE_INATIVO ){
+            return HttpResponse::httpStatus401( HttpResponse::prepareResponseOperacao(false) );
+        }
+
+        $this->ativoResource->setRequest($request);
         $this->ativoResource->setValorId( $dadosAporte[0]->cdPapel );
         $dadosAtivo = $this->ativoResource->buscarId();
         
+        //caso o ativo não pertença ao usuário dono do token
+        if( !count($dadosAtivo) ){
+            return HttpResponse::httpStatus401( HttpResponse::prepareResponseOperacao(false) );
+        }
+
         //calcula o valor montanta do resgate
         $montanteCalculo = $this->montanteCalculoBuilder
             ->setDiasCorridos( DATACALC::diffDays($dadosAporte[0]->dtAporte, date('Y-m-d')) )
@@ -92,7 +113,6 @@ class Resgate{
         $params['descontoIof']      = $montanteCalculo->getDescontoIof();
         $params['descontoIr']       = $montanteCalculo->getDescontoIr();
         $params['descontoAdmin']    = $montanteCalculo->getDescontoAdmin();
-        $params['cdUsuario']        = $reqBody['usuario'];
         
         //finaliza o resgate
         $this->resgateResource->setParams($params);
@@ -105,6 +125,7 @@ class Resgate{
 
     public function deletar(Request $request){
 
+        $this->resgateResource->setRequest($request);
         $this->resgateResource->setValorId($request->id);
 
         $sucesso = $this->resgateResource->deletar();

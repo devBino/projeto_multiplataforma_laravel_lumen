@@ -4,6 +4,7 @@ namespace App\Http\Repositories\Abstracts;
 use DB;
 use Exception;
 use App\Http\Constants\Params;
+use Illuminate\Http\Request;
 
 /**
  * @author Fernando Bino Mchado
@@ -25,6 +26,7 @@ abstract class Query{
     protected $valorId;
     protected $params;
     protected $limit;
+    protected $request;
     
     public function __construct(){    
         $this->setLimit();
@@ -36,8 +38,17 @@ abstract class Query{
      */
     public function listar(){
         try{
-            return DB::table($this->tabela)->select()->limit($this->limit)->get();
+            return DB::table($this->tabela)
+                ->select()
+                ->where(Params::CD_USUARIO, $this->getIdToken())
+                ->limit($this->limit)
+                ->get();
         }catch(Exception $err){
+
+            if( env('APP_DEBUG') ){
+                echo "<pre>";print_r($err->getMessage());die;
+            }
+
             return array();
         }
     }
@@ -48,10 +59,16 @@ abstract class Query{
     public function buscarId(){
         try{
             return DB::table($this->tabela)
-                ->where($this->campoId, $this->valorId)
                 ->select()
+                ->where($this->campoId, $this->valorId)
+                ->where(Params::CD_USUARIO, $this->getIdToken())
                 ->get();
         }catch(Exception $err){
+
+            if( env('APP_DEBUG') ){
+                echo "<pre>";print_r($err->getMessage());die;
+            }
+
             return array();
         }
     }
@@ -63,6 +80,11 @@ abstract class Query{
         try{
             return DB::table($this->tabela)->insert($this->params);
         }catch(Exception $err){
+
+            if( env('APP_DEBUG') ){
+                echo "<pre>";print_r($err->getMessage());die;
+            }
+
             return array();
         }
     }
@@ -75,8 +97,14 @@ abstract class Query{
         try{
             return DB::table($this->tabela)
                 ->where($this->campoId, $this->valorId)
+                ->where(Params::CD_USUARIO, $this->getIdToken())
                 ->update($this->params);
         }catch(Exception $err){
+
+            if( env('APP_DEBUG') ){
+                echo "<pre>";print_r($err->getMessage());die;
+            }
+
             return array();
         }
     }
@@ -89,8 +117,14 @@ abstract class Query{
         try{
             return DB::table($this->tabela)
                 ->where($this->campoId, $this->valorId)
+                ->where(Params::CD_USUARIO, $this->getIdToken())
                 ->delete();
         }catch(Exception $err){
+
+            if( env('APP_DEBUG') ){
+                echo "<pre>";print_r($err->getMessage());die;
+            }
+
             return array();
         }
     }
@@ -111,11 +145,25 @@ abstract class Query{
     }
 
     public function setParams($pParams){
+        $pParams[Params::CD_USUARIO] = $this->getIdToken();
         $this->params = $pParams;
     }
 
     public function setLimit($pLimit = Params::DEFAULT_LIMIT_TABLES){
         $this->limit = $pLimit;
+    }
+
+    public function setRequest(Request $pRequest){
+        $this->request = $pRequest;
+    }
+
+    public function getIdToken(){
+        
+        $dadosToken = $this->request->header(Params::X_ACCESS_TOKEN);
+        $arrDados = explode("_", $dadosToken);
+        
+        return end($arrDados);
+
     }
 
 }

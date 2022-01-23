@@ -18,9 +18,10 @@ class Ativo{
         $this->ativoResource = new AtivoResource();
     }
 
-    public function listar(){
+    public function listar(Request $request){
         
         $this->ativoResource->setLimit(Params::DEFAULT_LIMIT_TABLES);
+        $this->ativoResource->setRequest($request);
 
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
             $this->ativoResource->listar()
@@ -30,6 +31,7 @@ class Ativo{
 
     public function buscarId(Request $request){
         
+        $this->ativoResource->setRequest($request);
         $this->ativoResource->setValorId( $request->id );
 
         return HttpResponse::httpStatus200( HttpResponse::prepareResponseListagem(
@@ -40,17 +42,18 @@ class Ativo{
 
     public function salvar(Request $request){
         
-        $reqBody = $request->all();
+        $this->ativoResource->setRequest($request);
 
+        $reqBody = $request->input();
+        
         $params = [];
 
         $params['nmPapel'] = $reqBody['nome'];
         $params['cotacao'] = $reqBody['cotacao'];
         $params['cdTipo'] = $reqBody['tipo'];
-        $params['subTipo'] =$reqBody['subTipo'];
+        $params['subTipo'] = $reqBody['subTipo'];
         $params['taxaIr'] = $reqBody['taxaIr'];
-        $params['cdUsuario'] = $reqBody['usuario'];
-
+        
         $this->ativoResource->setParams($params);
 
         $sucesso = $this->ativoResource->salvar();
@@ -61,6 +64,8 @@ class Ativo{
 
     public function alterar(Request $request){
         
+        $this->ativoResource->setRequest($request);
+
         $reqBody = $request->input();
 
         $params = [];
@@ -70,7 +75,6 @@ class Ativo{
         $params['cdTipo'] = $reqBody['tipo'];
         $params['subTipo'] = $reqBody['subTipo'];
         $params['taxaIr'] = $reqBody['taxaIr'];
-        $params['cdUsuario'] = $reqBody['usuario'];
 
         $this->ativoResource->setValorId($reqBody['id']);
         $this->ativoResource->setParams($params);
@@ -83,6 +87,7 @@ class Ativo{
 
     public function deletar(Request $request){
 
+        $this->ativoResource->setRequest($request);
         $this->ativoResource->setValorId($request->id);
 
         $sucesso = $this->ativoResource->deletar();

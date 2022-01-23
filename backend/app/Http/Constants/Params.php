@@ -29,7 +29,20 @@ class Params{
      */
     const RENDA_FIXA = 1;
     const RENDA_VARIAVEL = 2;
+    const APORTE_INATIVO = 2;
+    const APORTE_ATIVO = 1;
 
     const TAXA_SOBRE_LUCRO = 20;
+
+    /**
+     * constants para autenticação
+     */
+    const VALOR_TOKEN = "valor_token";
+    const X_ACCESS_TOKEN = "x-access-token";
+    const USER = "user";
     
+    /**
+     * constant para coluna usuario padrão
+     */
+    const CD_USUARIO = "cdUsuario";
 }
