@@ -10,12 +10,27 @@ use Illuminate\Http\Request;
  * Recebe as requisições e utiliza InformeResource
  * para salvar em banco de dados
  */
-class Informe{
+class Informe extends ControllerValidator{
 
     private $informeResource;
 
     public function __construct(){
+        
         $this->informeResource = new InformeResource();
+
+        $this->setRegrasCamposPost([
+            'descricao'=>'required|String',
+            'valor'=>'required|Numeric',
+            'data'=>'required|Date'
+        ]);
+
+        $this->setRegrasCamposPut([
+            'id'=>'required|Integer',
+            'descricao'=>'required|String',
+            'valor'=>'required|Numeric',
+            'data'=>'required|Date'
+        ]);
+
     }
 
     public function listar(Request $request){
@@ -30,6 +45,14 @@ class Informe{
 
     public function buscarId(Request $request){
         
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //busca registro
         $this->informeResource->setValorId( $request->id );
         $this->informeResource->setRequest($request);
 
@@ -41,6 +64,14 @@ class Informe{
 
     public function salvar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPost($request->all());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //salva registro
         $this->informeResource->setRequest($request);
 
         $reqBody = $request->all();
@@ -61,6 +92,14 @@ class Informe{
 
     public function alterar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPut($request->input());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //altera registro
         $this->informeResource->setRequest($request);
 
         $reqBody = $request->input();
@@ -82,6 +121,14 @@ class Informe{
 
     public function deletar(Request $request){
 
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //deleta registro
         $this->informeResource->setRequest($request);
         $this->informeResource->setValorId($request->id);
 

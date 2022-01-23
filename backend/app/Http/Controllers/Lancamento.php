@@ -10,12 +10,29 @@ use Illuminate\Http\Request;
  * Recebe as requisições e utiliza LancamentoResource
  * para salvar em banco de dados
  */
-class Lancamento{
+class Lancamento extends ControllerValidator{
 
     private $lancamentoResource;
 
     public function __construct(){
+        
         $this->lancamentoResource = new LancamentoResource();
+
+        $this->setRegrasCamposPost([
+            'descricao' => 'required|String',
+            'valor' => 'required|Numeric',
+            'data' => 'required|Date',
+            'tipo' => 'required|Integer'
+        ]);
+
+        $this->setRegrasCamposPut([
+            'id'=>'required|Integer',
+            'descricao' => 'required|String',
+            'valor' => 'required|Numeric',
+            'data' => 'required|Date',
+            'tipo' => 'required|Integer'
+        ]);
+
     }
 
     public function listar(Request $request){
@@ -30,6 +47,14 @@ class Lancamento{
 
     public function buscarId(Request $request){
         
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //busca registro
         $this->lancamentoResource->setRequest($request);
         $this->lancamentoResource->setValorId( $request->id );
 
@@ -41,6 +66,14 @@ class Lancamento{
 
     public function salvar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPost($request->all());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //salva registro
         $this->lancamentoResource->setRequest($request);
 
         $reqBody = $request->all();
@@ -62,6 +95,14 @@ class Lancamento{
 
     public function alterar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPut($request->input());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //altera registro
         $this->lancamentoResource->setRequest($request);
 
         $reqBody = $request->input();
@@ -84,6 +125,14 @@ class Lancamento{
 
     public function deletar(Request $request){
 
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //deleta registro
         $this->lancamentoResource->setRequest($request);
         $this->lancamentoResource->setValorId($request->id);
 

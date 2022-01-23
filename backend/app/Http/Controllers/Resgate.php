@@ -15,7 +15,7 @@ use DateTime;
  * Recebe as requisições e utiliza ResgateResource
  * para salvar em banco de dados
  */
-class Resgate{
+class Resgate extends ControllerValidator{
 
     private $resgateResource;
     private $papelResource;
@@ -23,10 +23,20 @@ class Resgate{
     private $montanteCalculoBuilder;
 
     public function __construct(){
+
         $this->ativoResource = new AtivoResource();
         $this->resgateResource = new ResgateResource();
         $this->aporteResource = new AporteResource();
         $this->montanteCalculoBuilder = new MontanteCalculoBuilder();
+
+        $this->setRegrasCamposPost([
+            'papel' => 'required|Integer',
+            'aporte' => 'required|Integer',
+            'valor' => 'required|Numeric',
+            'quantidade' => 'required|Integer',
+            'subTotal' => 'required|Numeric'
+        ]);
+
     }
 
     public function listar(Request $request){
@@ -41,6 +51,14 @@ class Resgate{
 
     public function buscarId(Request $request){
         
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //busca registro
         $this->resgateResource->setRequest($request);
         $this->resgateResource->setValorId( $request->id );
 
@@ -52,6 +70,13 @@ class Resgate{
 
     public function salvar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPost($request->all());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
         $this->resgateResource->setRequest($request);
 
         $reqBody = $request->all();
@@ -125,6 +150,14 @@ class Resgate{
 
     public function deletar(Request $request){
 
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //deleta registro
         $this->resgateResource->setRequest($request);
         $this->resgateResource->setValorId($request->id);
 

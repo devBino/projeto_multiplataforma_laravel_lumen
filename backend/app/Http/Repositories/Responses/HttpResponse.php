@@ -33,6 +33,13 @@ class HttpResponse{
 
     }
 
+    public static function httpStatus400( $pResponse ){
+
+        return (new Response($pResponse, Params::STATUS_HTTP_400))
+            ->header("Content-Type", Params::TYPE_JSON);
+
+    }
+
     public static function prepareResponseOperacao( $pSucesso  ){
 
         $dataResponse = [];
@@ -52,6 +59,19 @@ class HttpResponse{
         $dataResponse['mensagem'] = Params::MSG_SUCCESS;
         $dataResponse['sucesso'] = true;
         $dataResponse['registros'] = $pResponseLista;
+
+        return $dataResponse;
+
+    }
+
+    public static function prepareResponseBadRequest( $pResponseLista ){
+
+        $dataResponse = [];
+    
+        $dataResponse['mensagem'] = Params::MSG_ERROR;
+        $dataResponse['sucesso'] = false;
+        $dataResponse['registros'] = [];
+        $dataResponse['erros'] = $pResponseLista;
 
         return $dataResponse;
 

@@ -11,14 +11,35 @@ use Illuminate\Http\Request;
  * Recebe as requisições e utiliza ProventoResource
  * para salvar em banco de dados
  */
-class Provento{
+class Provento extends ControllerValidator{
 
     private $proventoResource;
     private $ativoResource;
 
     public function __construct(){
+
         $this->proventoResource = new ProventoResource();
         $this->ativoResource = new AtivoResource();
+
+        $this->setRegrasCamposPost([
+            'papel' => 'required|Integer',
+            'valor' => 'required|Numeric',
+            'quantidade' => 'required|Integer',
+            'subTotal' => 'required|Numeric',
+            'tipo' => 'required|Integer',
+            'data' => 'required|Date'
+        ]);
+
+        $this->setRegrasCamposPut([
+            'id'=>'required|Integer',
+            'papel' => 'required|Integer',
+            'valor' => 'required|Numeric',
+            'quantidade' => 'required|Integer',
+            'subTotal' => 'required|Numeric',
+            'tipo' => 'required|Integer',
+            'data' => 'required|Date'
+        ]);
+
     }
 
     public function listar(Request $request){
@@ -32,7 +53,15 @@ class Provento{
     }
 
     public function buscarId(Request $request){
-        
+
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //busca registro
         $this->proventoResource->setRequest($request);
         $this->proventoResource->setValorId( $request->id );
 
@@ -44,6 +73,13 @@ class Provento{
 
     public function salvar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPost($request->all());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
         $this->proventoResource->setRequest($request);
 
         $reqBody = $request->all();
@@ -78,6 +114,13 @@ class Provento{
 
     public function alterar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPut($request->input());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
         $this->proventoResource->setRequest($request);
 
         $reqBody = $request->input();
@@ -113,6 +156,14 @@ class Provento{
 
     public function deletar(Request $request){
 
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //deleta registro
         $this->proventoResource->setRequest($request);
         $this->proventoResource->setValorId($request->id);
 

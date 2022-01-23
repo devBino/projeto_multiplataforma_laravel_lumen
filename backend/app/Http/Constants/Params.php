@@ -9,6 +9,7 @@ class Params{
     const STATUS_HTTP_200 = 200;
     const STATUS_HTTP_500 = 500;
     const STATUS_HTTP_401 = 401;
+    const STATUS_HTTP_400 = 400;
 
     const TYPE_JSON = "application/json";
     

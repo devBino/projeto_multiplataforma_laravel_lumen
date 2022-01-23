@@ -11,14 +11,39 @@ use Illuminate\Http\Request;
  * Recebe as requisições e utiliza AporteResource
  * para salvar em banco de dados
  */
-class Aporte{
+class Aporte extends ControllerValidator{
 
     private $aporteResource;
     private $ativoResource;
 
     public function __construct(){
+
         $this->aporteResource = new AporteResource();
         $this->ativoResource = new AtivoResource();
+
+        $this->setRegrasCamposPost([
+            'papel' => 'required',
+            'valor' => 'required|Numeric',
+            'quantidade' => 'required|Integer',
+            'subTotal' => 'required|Numeric',
+            'data' => 'required|Date',
+            'status' => 'required|Integer',
+            'taxaRetorno' => 'required|Numeric',
+            'taxaAdministracao' => 'required|Numeric'
+        ]);
+
+        $this->setRegrasCamposPut([
+            'id' => 'Integer',
+            'papel' => 'required',
+            'valor' => 'required|Numeric',
+            'quantidade' => 'required|Integer',
+            'subTotal' => 'required|Numeric',
+            'data' => 'required|Date',
+            'status' => 'required|Integer',
+            'taxaRetorno' => 'required|Numeric',
+            'taxaAdministracao' => 'required|Numeric'
+        ]);
+
     }
 
     public function listar(Request $request){
@@ -33,7 +58,15 @@ class Aporte{
     }
 
     public function buscarId(Request $request){
-        
+
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //busca registro
         $this->aporteResource->setValorId( $request->id );
         $this->aporteResource->setRequest($request);
 
@@ -45,6 +78,13 @@ class Aporte{
 
     public function salvar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPost($request->all());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
         $this->aporteResource->setRequest($request);
 
         $reqBody = $request->all();
@@ -81,6 +121,13 @@ class Aporte{
 
     public function alterar(Request $request){
         
+        //valida campos
+        $arrErros = $this->validarCamposPut($request->input());
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
         $this->aporteResource->setRequest($request);
 
         $reqBody = $request->input();
@@ -118,6 +165,14 @@ class Aporte{
 
     public function deletar(Request $request){
 
+        //valida id
+        $arrErros = $this->validarCampoId($request->id);
+
+        if( count($arrErros) ){
+            return HttpResponse::httpStatus400( HttpResponse::prepareResponseBadRequest($arrErros));
+        }
+
+        //deleta registro
         $this->aporteResource->setRequest($request);
         $this->aporteResource->setValorId($request->id);
 
