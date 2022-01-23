@@ -82,6 +82,8 @@ class Resgate extends ControllerValidator{
         $reqBody = $request->all();
 
         //recupera dados necessários para o calculo
+
+        //aporte
         $this->aporteResource->setRequest($request);
         $this->aporteResource->setValorId( $reqBody['aporte'] );
         $dadosAporte = $this->aporteResource->buscarId();
@@ -96,6 +98,7 @@ class Resgate extends ControllerValidator{
             return HttpResponse::httpStatus401( HttpResponse::prepareResponseOperacao(false) );
         }
 
+        //ativo
         $this->ativoResource->setRequest($request);
         $this->ativoResource->setValorId( $dadosAporte[0]->cdPapel );
         $dadosAtivo = $this->ativoResource->buscarId();
@@ -105,7 +108,7 @@ class Resgate extends ControllerValidator{
             return HttpResponse::httpStatus401( HttpResponse::prepareResponseOperacao(false) );
         }
 
-        //calcula o valor montanta do resgate
+        //calcula o valor montante do resgate
         $montanteCalculo = $this->montanteCalculoBuilder
             ->setDiasCorridos( DATACALC::diffDays($dadosAporte[0]->dtAporte, date('Y-m-d')) )
             ->setTipo($dadosAtivo[0]->cdTipo)
@@ -139,7 +142,7 @@ class Resgate extends ControllerValidator{
         $params['descontoIr']       = $montanteCalculo->getDescontoIr();
         $params['descontoAdmin']    = $montanteCalculo->getDescontoAdmin();
         
-        //finaliza o resgate
+        //salva o resgate
         $this->resgateResource->setParams($params);
 
         $sucesso = $this->resgateResource->salvar();
