@@ -25,8 +25,8 @@ abstract class Query{
     protected $valorId;
     protected $params;
     protected $limit;
-
-    public function __construct(){
+    
+    public function __construct(){    
         $this->setLimit();
     }
 
@@ -35,24 +35,36 @@ abstract class Query{
      * $this->limit podera ser setado antes de chamar esse método
      */
     public function listar(){
-        return DB::table($this->tabela)->select()->limit($this->limit)->get();
+        try{
+            return DB::table($this->tabela)->select()->limit($this->limit)->get();
+        }catch(Exception $err){
+            return array();
+        }
     }
 
     /**
      * Permite um resource buscar um registro de uma tabela pelo id
      */
     public function buscarId(){
-        return DB::table($this->tabela)
-            ->where($this->campoId, $this->valorId)
-            ->select()
-            ->get();
+        try{
+            return DB::table($this->tabela)
+                ->where($this->campoId, $this->valorId)
+                ->select()
+                ->get();
+        }catch(Exception $err){
+            return array();
+        }
     }
 
     /**
      * Permite um resourse salvar um registro em uma tabela
      */
     public function salvar(){
-        return DB::table($this->tabela)->insert($this->params);
+        try{
+            return DB::table($this->tabela)->insert($this->params);
+        }catch(Exception $err){
+            return array();
+        }
     }
 
     /**
@@ -60,11 +72,13 @@ abstract class Query{
      * enquanto o respectivo campo id for igual ao valor recebido
      */
     public function alterar(){
-        
-        return DB::table($this->tabela)
-            ->where($this->campoId, $this->valorId)
-            ->update($this->params);
-        
+        try{
+            return DB::table($this->tabela)
+                ->where($this->campoId, $this->valorId)
+                ->update($this->params);
+        }catch(Exception $err){
+            return array();
+        }
     }
 
     /**
@@ -72,9 +86,13 @@ abstract class Query{
      * pelo id recebido
      */
     public function deletar(){
-        return DB::table($this->tabela)
-            ->where($this->campoId, $this->valorId)
-            ->delete();
+        try{
+            return DB::table($this->tabela)
+                ->where($this->campoId, $this->valorId)
+                ->delete();
+        }catch(Exception $err){
+            return array();
+        }
     }
 
     /**

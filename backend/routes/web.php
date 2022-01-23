@@ -13,43 +13,50 @@
 |
 */
 
+$router->get('/',function(){
+    echo json_encode(['msg'=>'Api Rest para controle de investimetos...']);
+});
+
 //ativos
-$router->get('/ativos', 'Ativo@listar');
-$router->get('/ativos/{id}','Ativo@buscarId');
-$router->post('/ativos','Ativo@salvar' );
-$router->put('/ativos', 'Ativo@alterar');
-$router->delete('/ativos/{id}', 'Ativo@deletar');
+$router->get('/ativos', ['middleware'=>'auth','uses'=>'Ativo@listar']);
+$router->get('/ativos/{id}', ['middleware'=>'auth','uses'=>'Ativo@buscarId']);
+$router->post('/ativos',['middleware'=>'auth','uses'=>'Ativo@salvar']);
+$router->put('/ativos', ['middleware'=>'auth','uses'=>'Ativo@alterar']);
+$router->delete('/ativos/{id}', ['middleware'=>'auth','uses'=>'Ativo@deletar']);
 
 //aportes
-$router->get('/aportes', 'Aporte@listar');
-$router->get('/aportes/{id}','Aporte@buscarId');
-$router->post('/aportes','Aporte@salvar' );
-$router->put('/aportes', 'Aporte@alterar');
-$router->delete('/aportes/{id}', 'Aporte@deletar');
+$router->get('/aportes', ['middleware'=>'auth','uses'=>'Aporte@listar']);
+$router->get('/aportes/{id}',['middleware'=>'auth','uses'=>'Aporte@buscarId']);
+$router->post('/aportes',['middleware'=>'auth','uses'=>'Aporte@salvar']);
+$router->put('/aportes', ['middleware'=>'auth','uses'=>'Aporte@alterar']);
+$router->delete('/aportes/{id}', ['middleware'=>'auth','uses'=>'Aporte@deletar']);
 
 //proventos
-$router->get('/proventos', 'Provento@listar');
-$router->get('/proventos/{id}','Provento@buscarId');
-$router->post('/proventos','Provento@salvar' );
-$router->put('/proventos', 'Provento@alterar');
-$router->delete('/proventos/{id}', 'Provento@deletar');
+$router->get('/proventos', ['middleware'=>'auth','uses'=>'Provento@listar']);
+$router->get('/proventos/{id}',['middleware'=>'auth','uses'=>'Provento@buscarId']);
+$router->post('/proventos',['middleware'=>'auth','uses'=>'Provento@salvar']);
+$router->put('/proventos', ['middleware'=>'auth','uses'=>'Provento@alterar']);
+$router->delete('/proventos/{id}', ['middleware'=>'auth','uses'=>'Provento@deletar']);
 
 //informe
-$router->get('/informe', 'Informe@listar');
-$router->get('/informe/{id}','Informe@buscarId');
-$router->post('/informe','Informe@salvar' );
-$router->put('/informe', 'Informe@alterar');
-$router->delete('/informe/{id}', 'Informe@deletar');
+$router->get('/informe', ['middleware'=>'auth','uses'=>'Informe@listar']);
+$router->get('/informe/{id}',['middleware'=>'auth','uses'=>'Informe@buscarId']);
+$router->post('/informe',['middleware'=>'auth','uses'=>'Informe@salvar']);
+$router->put('/informe', ['middleware'=>'auth','uses'=>'Informe@alterar']);
+$router->delete('/informe/{id}', ['middleware'=>'auth','uses'=>'Informe@deletar']);
 
 //lancamentos
-$router->get('/lancamentos', 'Lancamento@listar');
-$router->get('/lancamentos/{id}','Lancamento@buscarId');
-$router->post('/lancamentos','Lancamento@salvar' );
-$router->put('/lancamentos', 'Lancamento@alterar');
-$router->delete('/lancamentos/{id}', 'Lancamento@deletar');
+$router->get('/lancamentos', ['middleware'=>'auth','uses'=>'Lancamento@listar']);
+$router->get('/lancamentos/{id}',['middleware'=>'auth','uses'=>'Lancamento@buscarId']);
+$router->post('/lancamentos',['middleware'=>'auth','uses'=>'Lancamento@salvar']);
+$router->put('/lancamentos', ['middleware'=>'auth','uses'=>'Lancamento@alterar']);
+$router->delete('/lancamentos/{id}', ['middleware'=>'auth','uses'=>'Lancamento@deletar']);
 
 //resgates
-$router->get('/resgates', 'Resgate@listar');
-$router->get('/resgates/{id}','Resgate@buscarId');
-$router->post('/resgates','Resgate@salvar' );
-$router->delete('/resgates/{id}', 'Resgate@deletar');
+$router->get('/resgates', ['middleware'=>'auth','uses'=>'Resgate@listar']);
+$router->get('/resgates/{id}',['middleware'=>'auth','uses'=>'Resgate@buscarId']);
+$router->post('/resgates',['middleware'=>'auth','uses'=>'Resgate@salvar']);
+$router->delete('/resgates/{id}', ['middleware'=>'auth','uses'=>'Resgate@deletar']);
+
+//usuario
+$router->get('/autenticar/{user}/{pass}','Usuario@autenticar');

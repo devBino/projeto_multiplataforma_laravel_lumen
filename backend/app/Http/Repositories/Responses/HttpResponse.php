@@ -56,5 +56,20 @@ class HttpResponse{
         return $dataResponse;
 
     }
+    
+    public static function prepareResponseToken( $pToken, $user, $pSucesso ){
+
+        $dataResponse = [];
+
+        $dataResponse['mensagem'] = $pSucesso ? "Token recuperado com sucesso..." : "Erro ao recuperar token...";
+        $dataResponse['sucesso'] = $pSucesso;
+        $dataResponse['token'] = $pSucesso ? $pToken : false;
+        $dataResponse['user'] = $user;
+
+        return $dataResponse;
+
+    }
+
+    
 
 }
