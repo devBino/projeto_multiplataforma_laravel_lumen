@@ -1,14 +1,14 @@
 # projeto_multiplataforma_laravel_lumen
 
-<p align="justify">O presente projeto contando com um histórico de commits, mostra a tentativa de desenvolvimento de uma API RestFul criada com micro framework Lumen.</p>
+<p align="justify">O presente projeto contando com um histórico de commits, mostra a tentativa de desenvolvimento de uma <b>API RestFul</b> criada utilizando o micro <b>Framework Lumen</b>.</p>
 <p  align="justify">Essa é uma API de investimentos, onde será possível cadastrar ativos, registrar aportes para esses ativos e mesmo registrar resgates.</p>
 
 <br>
-<p align="justify">A api não somente proporciona Salvar, Alterar, Listar e Excluir registros dado determinado recurso.</p>
+<p align="justify">A api não somente proporciona Salvar, Alterar, Listar e Excluir registros dado determinado recurso, como seria um Rest básico.</p>
 
 <br>
-<p align="justify">Para utilizar a API é necessário se autenticar, assim o usuário receberá um token, e dessa forma em todas as requisições futuras
-para qualquer recurso, deverão ser passados duas chaves em headers, a saber <b>x-access-token</b> além do nome do usuário em <b>user</b>.</p>
+<p align="justify">Para utilizar a API é necessário <b>se autenticar</b>, assim o usuário receberá um token, e dessa forma em todas as requisições futuras
+  para qualquer recurso, deverão ser passados duas chaves em <b>headers</b>, a saber <b>x-access-token</b> além do nome do usuário em <b>user</b>.</p>
 
 <br>
 <p align="justify">Além do conceito de Authenticate presente no desenvolvimento, temos também a aplicação prática do Authorization, pois em determinados momentos
