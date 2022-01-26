@@ -1,6 +1,6 @@
 # projeto_multiplataforma_laravel_lumen
 
-<p align="justify">O presente projeto contando com um histórico de commits, mostra a tentativa de desenvolvimento de uma <b>API RestFul</b> criada utilizando o micro <b>Framework Lumen</b>.</p>
+<p align="justify">O presente projeto contando com um histórico de commits, mostra a tentativa de desenvolvimento de uma <b>API RestFul</b> utilizando o micro <b>Framework Lumen</b>.</p>
 <p  align="justify">Essa é uma API de investimentos, onde será possível cadastrar ativos, registrar aportes para esses ativos e mesmo registrar resgates.</p>
 
 <br>
