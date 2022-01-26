@@ -24,7 +24,7 @@ com mensagem amigável é claro...</b>
 
 <br>
 <p align="justify">Merece destaque ainda, que o cálculo de resgate de um ativo, possui muitas variáveis e condições, sendo assim complexo, então para facilitar e reutilizar esse cálculo,
-foi aplicado o <p>Design Pattern Builder</b> em <i>App\Http\Repositories\Builder</i> na classe <i>MontanteCalculoBuilder</i>. Dessa forma de maneira elegante
+foi aplicado o <p>Design Pattern Builder</b> em <b><i>App\Http\Repositories\Builder</i></b> na classe <b><i>MontanteCalculoBuilder</i></b>. Dessa forma de maneira elegante
 resolvemos o problema do cálculo do resgate de um aporte, criando um objeto complexo <i>MontanteCalculo</i> e um respectivo Builder para ele. Assim sempre que 
 houver a mesma necessidade em diferentes lugares do código, essa classe utilizando padrão de projeto Builder, facilita e resolve a questão.</b>
 
